@@ -1,4 +1,4 @@
-name: Release Patch Update
+name: Bump New Patch
 on:
   workflow_dispatch:
 
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  new_patch_release:
+  bump_new_patch:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -42,14 +42,3 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
         run: |
           gh pr merge --merge --auto "$PR_URL"
-      # - name: Push new patch version
-      #   env:
-      #     PR_URL: ${{github.event.pull_request.html_url}}
-      #   run: |
-      #     gh pr review --approve "$PR_URL"
-      #     gh pr merge --auto --merge "$PR_URL"
-      # - name: Create new release tag
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   run: |
-      #     git push origin main --tags

@@ -1,0 +1,21 @@
+name: Create Patch Release Tag
+on:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  create_patch_release_tag:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - name: Create new release tag
+        run: |
+          export TAG_NAME="$(node -p "require('./package.json').version")"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
