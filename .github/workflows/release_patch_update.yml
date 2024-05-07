@@ -22,7 +22,7 @@ jobs:
       - name: Checkout new branch
         run: |
           echo "$(node -p "require('./package.json').version")"
-          git checkout -b "$(node -p "require('./package.json').version")"
+          git checkout -b "bump-v$(node -p "require('./package.json').version")"
       - name: Echo new version
         run: |
           echo "New version: $(node -p "require('./package.json').version")"
@@ -37,11 +37,13 @@ jobs:
             --title "Bump version to $(node -p "require('./package.json').version")" \
             --body "Bump version to $(node -p "require('./package.json').version")" \
             --base main
-      # - name: Push new patch version
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   run: |
-      #     git push origin HEAD
+      - name: Push new patch version
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          PR_URL: ${{github.event.pull_request.html_url}}
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto --merge "$PR_URL"
       # - name: Create new release tag
       #   env:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
