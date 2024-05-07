@@ -1,7 +1,8 @@
 name: Create Patch Release Tag
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - main
 
 permissions:
   pull-requests: write
