@@ -1,8 +1,7 @@
 name: Create Patch Release Tag
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
 
 permissions:
   pull-requests: read
@@ -11,6 +10,7 @@ permissions:
 jobs:
   create_patch_release_tag:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
