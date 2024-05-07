@@ -9,6 +9,8 @@ permissions:
 jobs:
   new_patch_release:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - uses: actions/setup-node@v4
       - uses: actions/checkout@v4
@@ -27,8 +29,6 @@ jobs:
         run: |
           echo "New version: $(node -p "require('./package.json').version")"
       - name: Push new patch version
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           git add .
           git commit -m "Bump version to $(node -p "require('./package.json').version")"
@@ -37,13 +37,17 @@ jobs:
             --title "Bump version to $(node -p "require('./package.json').version")" \
             --body "Bump version to $(node -p "require('./package.json').version")" \
             --base main
-      - name: Push new patch version
+      - name: Enable auto-merge
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           PR_URL: ${{github.event.pull_request.html_url}}
         run: |
-          gh pr review --approve "$PR_URL"
-          gh pr merge --auto --merge "$PR_URL"
+          gh pr merge --merge --auto "$PR_URL"
+      # - name: Push new patch version
+      #   env:
+      #     PR_URL: ${{github.event.pull_request.html_url}}
+      #   run: |
+      #     gh pr review --approve "$PR_URL"
+      #     gh pr merge --auto --merge "$PR_URL"
       # - name: Create new release tag
       #   env:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
