@@ -1,6 +1,9 @@
 name: Create Patch Release Tag
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   pull-requests: read
@@ -9,6 +12,7 @@ permissions:
 jobs:
   create_patch_release_tag:
     runs-on: ubuntu-latest
+    if: startsWith(github.event.head_commit.message, 'Bump version to') == true
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
