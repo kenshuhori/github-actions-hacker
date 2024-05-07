@@ -1,0 +1,11 @@
+{
+    "dockerComposeFile": [
+        "../compose.yaml"
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "name": "github-actions-hacker",
+    "service": "workspace",
+    "workspaceFolder": "/usr/src/app"
+}
