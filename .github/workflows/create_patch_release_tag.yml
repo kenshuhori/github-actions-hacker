@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   create_patch_release_tag:
-    if: github.event.pull_request.auto_merge != null
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
