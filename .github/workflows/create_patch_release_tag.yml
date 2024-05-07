@@ -4,7 +4,7 @@ on:
 
 permissions:
   pull-requests: read
-  contents: read
+  contents: write
 
 jobs:
   create_patch_release_tag:
@@ -17,5 +17,6 @@ jobs:
       - name: Create new release tag
         run: |
           export TAG_NAME="$(node -p "require('./package.json').version")"
+          echo $TAG_NAME
           git tag $TAG_NAME
           git push origin $TAG_NAME
