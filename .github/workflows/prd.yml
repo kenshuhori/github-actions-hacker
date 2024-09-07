@@ -9,7 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/_echo_hello_world.yml
+      - name: echo hello world
+        uses: ./.github/workflows/_echo_hello_world.yml
         id: echo_hello_world
         with:
           environment: production
