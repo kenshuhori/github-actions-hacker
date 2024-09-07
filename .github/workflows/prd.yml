@@ -8,12 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    secrets: inherit
     steps:
       - uses: ./.github/workflows/_echo_hello_world.yml
         id: echo_hello_world
         with:
           environment: production
-        secrets: inherit
       - name: test notice for slack
         if: steps.echo_hello_world.conclusion == 'success'
         uses: slackapi/slack-github-action@v1.27.0
