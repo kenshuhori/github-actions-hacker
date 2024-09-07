@@ -13,7 +13,8 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-
     steps:
       - name: echo hello world
-        run: echo "Hello, world!"
+        run: |
+          echo "Hello, world!"
+          exit 1
