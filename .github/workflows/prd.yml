@@ -29,6 +29,12 @@ jobs:
                   "color": "28a745",
                   "title": "https://github.com/kenshuhori/eleven-labo/",
                   "title_link": "https://github.com/kenshuhori/eleven-labo/",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "Success"
+                    }
+                  ]
                 }
               ]
             }
@@ -52,6 +58,12 @@ jobs:
                   "color": "dc3545",
                   "title": "https://github.com/kenshuhori/eleven-labo/",
                   "title_link": "https://github.com/kenshuhori/eleven-labo/",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "Failure"
+                    }
+                  ]
                 }
               ]
             }
