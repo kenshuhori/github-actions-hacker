@@ -27,10 +27,11 @@ jobs:
               "attachments": [
                 {
                   "color": "28a745",
+                  "title": "https://github.com/kenshuhori/eleven-labo/",
+                  "title_link": "https://github.com/kenshuhori/eleven-labo/",
                   "fields": [
                     {
                       "title": "Status",
-                      "title_link": "https://github.com/kenshuhori/eleven-labo/",
                       "value": "Success"
                     }
                   ]
@@ -54,12 +55,12 @@ jobs:
               "text": "XXXX（prd）のデプロイに失敗しました",
               "attachments": [
                 {
-                  "pretext": "Deployment finished",
                   "color": "dc3545",
+                  "title": "https://github.com/kenshuhori/eleven-labo/",
+                  "title_link": "https://github.com/kenshuhori/eleven-labo/",
                   "fields": [
                     {
                       "title": "Status",
-                      "title_link": "",
                       "value": "Failure"
                     }
                   ]
