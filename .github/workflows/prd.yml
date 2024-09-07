@@ -23,16 +23,15 @@ jobs:
           channel-id: 'C07LVABK9K2' # 通知テスト用
           payload: |
             {
-              "text": "デプロイ成功",
+              "text": "XXXX（prd）のデプロイに成功しました",
               "attachments": [
                 {
-                  "pretext": "Deployment finished",
                   "color": "28a745",
                   "fields": [
                     {
                       "title": "Status",
-                      "short": true,
-                      "value": "Completed"
+                      "title_link": "https://github.com/kenshuhori/eleven-labo/",
+                      "value": "Success"
                     }
                   ]
                 }
@@ -52,16 +51,16 @@ jobs:
           channel-id: 'C07LVABK9K2' # 通知テスト用
           payload: |
             {
-              "text": "デプロイ失敗",
+              "text": "XXXX（prd）のデプロイに失敗しました",
               "attachments": [
                 {
                   "pretext": "Deployment finished",
-                  "color": "28a745",
+                  "color": "dc3545",
                   "fields": [
                     {
                       "title": "Status",
-                      "short": true,
-                      "value": "Completed"
+                      "title_link": "",
+                      "value": "Failure"
                     }
                   ]
                 }
