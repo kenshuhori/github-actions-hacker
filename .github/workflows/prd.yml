@@ -11,16 +11,29 @@ jobs:
     with:
       environment: production
     secrets: inherit
-  slack_notifier:
+  slack_notifier_if_success:
     needs: build
+    if: ${{ success() }}
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: test notice for slack
-        id: slack
+      - name: test notice for slack if success
         uses: slackapi/slack-github-action@v1.27.0
         with:
           channel-id: 'C07LVABK9K2' # 通知テスト用
-          slack-message: "通知テスト : ${{ inputs.environment }}"
+          slack-message: "通知テスト（成功Ver）"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  slack_notifier_if_failure:
+    needs: build
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: test notice for slack if failure
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: 'C07LVABK9K2' # 通知テスト用
+          slack-message: "通知テスト（失敗Ver）"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
