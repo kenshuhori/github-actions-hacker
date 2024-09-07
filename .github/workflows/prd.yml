@@ -13,9 +13,12 @@ jobs:
     secrets: inherit
   slack_notifier:
     needs: build
-    uses: slackapi/slack-github-action@v1.27.0
-    with:
-      channel-id: 'C07LVABK9K2' # 通知テスト用
-      slack-message: "通知テスト : ${{ inputs.environment }}"
-    env:
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    steps:
+      - name: test notice for slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: 'C07LVABK9K2' # 通知テスト用
+          slack-message: "通知テスト : ${{ inputs.environment }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
