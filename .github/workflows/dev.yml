@@ -1,0 +1,13 @@
+name: assume to deploy development
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: ./.github/workflows/_echo_hello_world.yml
+    with:
+      environment: development
+    secrets: inherit

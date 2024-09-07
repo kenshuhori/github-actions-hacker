@@ -1,0 +1,19 @@
+name: echo hello world
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: echo hello world
+        run: echo "Hello, world!"
