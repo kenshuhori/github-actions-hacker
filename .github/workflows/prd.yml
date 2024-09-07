@@ -14,6 +14,7 @@ jobs:
   slack_notifier:
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: test notice for slack
         id: slack
