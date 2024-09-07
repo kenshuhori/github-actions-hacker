@@ -7,7 +7,17 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/_echo_hello_world.yml
-    with:
-      environment: production
-    secrets: inherit
+    steps:
+      - uses: ./.github/workflows/_echo_hello_world.yml
+        id: echo_hello_world
+        with:
+          environment: production
+        secrets: inherit
+      - name: test notice for slack
+        if: steps.echo_hello_world.conclusion == 'success'
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: 'C07LVABK9K2' # 通知テスト用
+          slack-message: "通知テスト : ${{ inputs.environment }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
