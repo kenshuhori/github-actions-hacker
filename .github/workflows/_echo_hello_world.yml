@@ -5,6 +5,9 @@ on:
       environment:
         required: true
         type: string
+      notify_slack_or_not:
+        required: true
+        type: boolean
 
 jobs:
   deploy:
@@ -18,11 +21,6 @@ jobs:
         run: |
           echo "Hello, world!"
           exit 0
-  slack_notifier_if_success:
-    needs: build
-    if: ${{ success() }}
-    runs-on: ubuntu-latest
-    steps:
       - name: test notice for slack if success
         uses: slackapi/slack-github-action@v1.27.0
         with:
@@ -52,11 +50,6 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  slack_notifier_if_failure:
-    needs: build
-    if: ${{ failure() }}
-    runs-on: ubuntu-latest
-    steps:
       - name: test notice for slack if failure
         uses: slackapi/slack-github-action@v1.27.0
         with:
