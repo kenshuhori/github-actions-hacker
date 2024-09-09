@@ -20,7 +20,7 @@ jobs:
       - name: specify environment short name
         run: |
           if [ "${{ inputs.environment }}" == "production" ]; then
-            echo "ENV_SHORT_NAME=" >> $GITHUB_ENV
+            echo "ENV_SHORT_NAME=prd" >> $GITHUB_ENV
           elif [ "${{ inputs.environment }}" == "demo" ]; then
             echo "ENV_SHORT_NAME=demo" >> $GITHUB_ENV
           elif [ "${{ inputs.environment }}" == "staging" ]; then
