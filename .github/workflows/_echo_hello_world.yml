@@ -5,6 +5,9 @@ on:
       environment:
         required: true
         type: string
+      notify_slack_or_not:
+        required: true
+        type: boolean
 
 jobs:
   deploy:
@@ -14,7 +17,80 @@ jobs:
       contents: "read"
       id-token: "write"
     steps:
+      - name: specify environment short name
+        run: |
+          if [ "${{ inputs.environment }}" == "production" ]; then
+            echo "ENV_SHORT_NAME=prd" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "demo" ]; then
+            echo "ENV_SHORT_NAME=demo" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "staging" ]; then
+            echo "ENV_SHORT_NAME=stg" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "development" ]; then
+            echo "ENV_SHORT_NAME=dev" >> $GITHUB_ENV
+          fi
       - name: echo hello world
+        id: deploy
+        continue-on-error: true
         run: |
           echo "Hello, world!"
           exit 0
+      - name: test notice for slack if success
+        if: ${{ inputs.notify_slack_or_not && steps.deploy.outcome == 'success' }}
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: 'C07LVABK9K2' # 通知テスト用
+          payload: |
+            {
+              "text": "XXXX（${{env.ENV_SHORT_NAME}}）のデプロイに成功しました",
+              "attachments": [
+                {
+                  "color": "28a745",
+                  "title": "https://github.com/kenshuhori/eleven-labo/",
+                  "title_link": "https://github.com/kenshuhori/eleven-labo/",
+                  "fields": [
+                    {
+                      "short": "true",
+                      "title": "Status",
+                      "value": "Success"
+                    },
+                    {
+                      "short": "true",
+                      "title": "ref_name",
+                      "value": "${{ github.ref_name }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: test notice for slack if failure
+        if: ${{ inputs.notify_slack_or_not && steps.deploy.outcome == 'failure' }}
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          channel-id: 'C07LVABK9K2' # 通知テスト用
+          payload: |
+            {
+              "text": "XXXX（${{env.ENV_SHORT_NAME}}）のデプロイに失敗しました",
+              "attachments": [
+                {
+                  "color": "dc3545",
+                  "title": "https://github.com/kenshuhori/eleven-labo/",
+                  "title_link": "https://github.com/kenshuhori/eleven-labo/",
+                  "fields": [
+                    {
+                      "short": "true",
+                      "title": "Status",
+                      "value": "Failure"
+                    },
+                    {
+                      "short": "true",
+                      "title": "ref_name",
+                      "value": "${{ github.ref_name }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
