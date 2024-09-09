@@ -4,6 +4,12 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -31,8 +37,14 @@ jobs:
                   "title_link": "https://github.com/kenshuhori/eleven-labo/",
                   "fields": [
                     {
+                      "short": "true",
                       "title": "Status",
                       "value": "Success"
+                    },
+                    {
+                      "short": "true",
+                      "title": "ref_name",
+                      "value": "${{ GITHUB_REF_NAME }}"
                     }
                   ]
                 }
@@ -60,8 +72,14 @@ jobs:
                   "title_link": "https://github.com/kenshuhori/eleven-labo/",
                   "fields": [
                     {
+                      "short": "true",
                       "title": "Status",
                       "value": "Failure"
+                    },
+                    {
+                      "short": "true",
+                      "title": "ref_name",
+                      "value": "${{ GITHUB_REF_NAME }}"
                     }
                   ]
                 }
