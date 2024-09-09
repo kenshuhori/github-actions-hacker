@@ -79,7 +79,7 @@ jobs:
                     {
                       "short": "true",
                       "title": "ref_name",
-                      "value": "${{ github.ref }}"
+                      "value": "${{ github.ref_name }}"
                     }
                   ]
                 }
