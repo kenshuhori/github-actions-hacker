@@ -22,6 +22,7 @@ jobs:
           echo "Hello, world!"
           exit 0
       - name: test notice for slack if success
+        if: ${{ inputs.notify_slack_or_not }}
         uses: slackapi/slack-github-action@v1.27.0
         with:
           channel-id: 'C07LVABK9K2' # 通知テスト用
@@ -51,6 +52,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       - name: test notice for slack if failure
+        if: ${{ inputs.notify_slack_or_not }}
         uses: slackapi/slack-github-action@v1.27.0
         with:
           channel-id: 'C07LVABK9K2' # 通知テスト用
