@@ -16,5 +16,4 @@ jobs:
     uses: ./.github/workflows/_echo_hello_world.yml
     with:
       environment: production
-      notify_slack_or_not: true
     secrets: inherit
