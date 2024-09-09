@@ -17,6 +17,12 @@ jobs:
       contents: "read"
       id-token: "write"
     steps:
+      - name: specify environment short name
+        run: |
+          ${{ inputs.environment }} == "production" -> echo "ENV_SHORT_NAME=" >> $GITHUB_ENV
+          ${{ inputs.environment }} == "demo" -> echo "ENV_SHORT_NAME=demo" >> $GITHUB_ENV
+          ${{ inputs.environment }} == "staging" -> echo "ENV_SHORT_NAME=stg" >> $GITHUB_ENV
+          ${{ inputs.environment }} == "development" -> echo "ENV_SHORT_NAME=dev" >> $GITHUB_ENV
       - name: echo hello world
         id: deploy
         run: |
