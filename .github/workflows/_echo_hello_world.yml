@@ -19,10 +19,15 @@ jobs:
     steps:
       - name: specify environment short name
         run: |
-          ${{ inputs.environment }} == "production" -> echo "ENV_SHORT_NAME=" >> $GITHUB_ENV
-          ${{ inputs.environment }} == "demo" -> echo "ENV_SHORT_NAME=demo" >> $GITHUB_ENV
-          ${{ inputs.environment }} == "staging" -> echo "ENV_SHORT_NAME=stg" >> $GITHUB_ENV
-          ${{ inputs.environment }} == "development" -> echo "ENV_SHORT_NAME=dev" >> $GITHUB_ENV
+          if [ "${{ inputs.environment }}" == "production" ]; then
+            echo "ENV_SHORT_NAME=" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "demo" ]; then
+            echo "ENV_SHORT_NAME=demo" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "staging" ]; then
+            echo "ENV_SHORT_NAME=stg" >> $GITHUB_ENV
+          elif [ "${{ inputs.environment }}" == "development" ]; then
+            echo "ENV_SHORT_NAME=dev" >> $GITHUB_ENV
+          fi
       - name: echo hello world
         id: deploy
         run: |
@@ -35,7 +40,7 @@ jobs:
           channel-id: 'C07LVABK9K2' # 通知テスト用
           payload: |
             {
-              "text": "XXXX（prd）のデプロイに成功しました",
+              "text": "XXXX（${{env.ENV_SHORT_NAME}}）のデプロイに成功しました",
               "attachments": [
                 {
                   "color": "28a745",
@@ -65,7 +70,7 @@ jobs:
           channel-id: 'C07LVABK9K2' # 通知テスト用
           payload: |
             {
-              "text": "XXXX（prd）のデプロイに失敗しました",
+              "text": "XXXX（${{env.ENV_SHORT_NAME}}）のデプロイに失敗しました",
               "attachments": [
                 {
                   "color": "dc3545",
