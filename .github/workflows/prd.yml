@@ -44,7 +44,7 @@ jobs:
                     {
                       "short": "true",
                       "title": "ref_name",
-                      "value": "${{ env.GITHUB_REF_NAME }}"
+                      "value": "${{ github.ref_name }}"
                     }
                   ]
                 }
@@ -79,7 +79,7 @@ jobs:
                     {
                       "short": "true",
                       "title": "ref_name",
-                      "value": "${{ env.GITHUB_REF_NAME }}"
+                      "value": "${{ github.ref_name }}"
                     }
                   ]
                 }
