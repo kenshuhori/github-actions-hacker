@@ -32,7 +32,7 @@ jobs:
         id: deploy
         run: |
           echo "Hello, world!"
-          exit 0
+          exit 1
       - name: test notice for slack if success
         if: ${{ inputs.notify_slack_or_not && steps.deploy.outcome == 'success' }}
         uses: slackapi/slack-github-action@v1.27.0
