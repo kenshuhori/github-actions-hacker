@@ -1,0 +1,58 @@
+name: Create PR for daily bump the version
+on:
+  schedule:
+    # JSTの09:00に実行
+    - cron: "0 0 * * 1-5"
+  workflow_dispatch:
+    # TODO: 手動でのバージョンアップは level(major,minor,patch)を受け取れるようにしたい。その場合は別ワークフローにした方がよい
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Fetch tags
+        # HEADにタグがついているかどうかでバージョンアップの有無を判定するため、タグをfetchする
+        # actions/checkout の fetch-tags: true が正しく動かないので手動でfetchする
+        # <https://github.com/actions/checkout/issues/1471>
+        run: git fetch --tags
+      - name: Git config
+        # <https://github.com/actions/checkout/pull/1184>
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Bump version and create PR
+        run: |
+          # HEADにタグがついていればバージョンアップしない
+          if git describe --exact-match --tags HEAD > /dev/null 2>&1; then
+            echo "Tag already exists. Skip bump version."
+            exit 0
+          fi
+          # パッチバージョンを上げる
+          OLD_VERSION=$(cat package.json | jq -r '.version')
+          yarn version --patch --no-git-tag-version --no-commit-hooks
+          NEW_VERSION=$(cat package.json | jq -r '.version')
+          # コミットを作成
+          PR_BRANCH_NAME="BUMP_VERSION-${NEW_VERSION}"
+          git checkout -b "${PR_BRANCH_NAME}"
+          git commit -am "Bump version to ${NEW_VERSION} [dm skip ci]"
+          # PRを作成
+          # - 本文には最新のtagとの差分を確認するためのリンクを含める
+          # - 前日のPRがマージされていない場合は、すでにリモートにブランチが存在しているためpushに失敗する
+          # - ワークフロー内でPRを作成した場合、pull_requestイベントが発火せず、結果として他のワークフローは起動しないことに注意
+          #   - <https://github.com/cli/cli/discussions/6575>
+          #   - 必須のワークフローが実行されなくなるので、ここではdraftとして作成し、[Ready for review]に変更した時に、ワークフローが実行される想定
+          git push -u origin HEAD
+          DIFF_URL="https://github.com/${GITHUB_REPOSITORY}/compare/${OLD_VERSION}...main"
+          gh pr create --title "Bump version to ${NEW_VERSION}" --body "${DIFF_URL}" --draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
