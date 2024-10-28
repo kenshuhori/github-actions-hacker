@@ -4,7 +4,6 @@ on:
     # JSTの09:00に実行
     - cron: "0 0 * * 1-5"
   workflow_dispatch:
-    # TODO: 手動でのバージョンアップは level(major,minor,patch)を受け取れるようにしたい。その場合は別ワークフローにした方がよい
     inputs:
       bump_level:
         description: "バージョンアップのレベルを指定します"
