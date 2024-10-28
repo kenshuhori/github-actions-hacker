@@ -5,6 +5,16 @@ on:
     - cron: "0 0 * * 1-5"
   workflow_dispatch:
     # TODO: 手動でのバージョンアップは level(major,minor,patch)を受け取れるようにしたい。その場合は別ワークフローにした方がよい
+    inputs:
+      bump_level:
+        description: "バージョンアップのレベルを指定します"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 permissions:
   pull-requests: write
