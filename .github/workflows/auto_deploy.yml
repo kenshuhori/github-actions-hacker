@@ -4,9 +4,8 @@ on:
   pull_request_target
 
 permissions:
+  pull-requests: write
   contents: write
-  pull-requests: read
-  id-token: write
 
 jobs:
   # "Bump version to" で始まるPRを自動で承認・マージ
