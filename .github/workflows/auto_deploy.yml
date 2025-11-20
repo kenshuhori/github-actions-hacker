@@ -6,6 +6,7 @@ on:
 permissions:
   pull-requests: write
   contents: write
+  id-token: write
 
 jobs:
   # "Bump version to" で始まるPRを自動で承認・マージ
